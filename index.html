@@ -2,12 +2,25 @@
 
 <head>
   <title></title>
+  <script>
+    function resize_canvas() {
+      canvas = document.getElementById("board");
+      if (canvas.width < window.innerWidth) {
+        canvas.width = window.innerWidth;
+      }
+
+      if (canvas.height < window.innerHeight) {
+        canvas.height = window.innerHeight;
+      }
+    }
+  </script>
 </head>
 
-<body><canvas id="gc" width="400" height="400"></canvas>
+<body onresize="resize_canvas()"><canvas id="board" width="400px" height="400px"></canvas>
   <script>
+  resize_canvas();
     window.onload = function() {
-      canv = document.getElementById("gc");
+      canv = document.getElementById("board");
       ctx = canv.getContext("2d");
       document.addEventListener("keydown", keyPush);
       setInterval(game, 1000 / 15);
