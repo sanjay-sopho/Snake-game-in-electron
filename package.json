@@ -1,0 +1,21 @@
+{
+  "name": "snake_game",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "budo": "^10.0.3",
+    "electron": "^1.6.11",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "budo": "^10.0.3",
+    "electron-prebuilt": "^1.4.13",
+    "watchify": "^3.9.0"
+  },
+  "description": ""
+}
