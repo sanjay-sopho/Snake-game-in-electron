@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "build" : "electron-packager ./ snake_game --platform=darwin --arch=ia32 --version=0.30.0"
+    "build" : "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds"
   },
   "author": "",
   "license": "ISC",
