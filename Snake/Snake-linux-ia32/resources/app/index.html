@@ -1,0 +1,144 @@
+<html>
+
+<head>
+  <title></title>
+  <script>
+    function resize_canvas() {
+      canvas = document.getElementById("board");
+      if (canvas.width < window.innerWidth) {
+        canvas.width = window.innerWidth;
+      }
+
+      if (canvas.height < window.innerHeight) {
+        canvas.height = window.innerHeight;
+      }
+    }
+  </script>
+</head>
+
+<body onresize="resize_canvas()"><canvas id="board" width="400px" height="400px"></canvas>
+  <script>
+    resize_canvas();
+    window.onload = function() {
+      canv = document.getElementById("board");
+      ctx = canv.getContext("2d");
+      document.addEventListener("keydown", keyPush);
+      setInterval(game, 1000 / 15);
+    }
+    var myScore;
+    positionX = positionY = 10;
+    gridSize = 10;
+    tileCountX = 140;
+    tileCountY = 80;
+    fruitPosX = fruitPosY = 15;
+    xVelocity = yVelocity = 0;
+    trail = [];
+    tail = 2;
+    myScore = new component("30px", "Consolas", "yellow", 1000, 70, "text");
+
+    function game() {
+      positionX += xVelocity;
+      positionY += yVelocity;
+      if (positionX < 0) {
+        positionX = tileCountX - 1;
+      }
+      if (positionX > tileCountX - 1) {
+        positionX = 0;
+      }
+      if (positionY < 10) {
+        positionY = tileCountY - 1;
+      }
+      if (positionY > tileCountY - 1) {
+        positionY = 11;
+      }
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 100, canv.width, canv.height);
+
+
+      ctx.fillStyle = "red";
+      for (var i = 0; i < trail.length; i++) {
+        ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
+        if (trail[i].x == positionX && trail[i].y == positionY) {
+          tail = 2;
+          xVelocity = yVelocity = 0;
+          myScore.text = "Score: " + (tail-2)*5;
+          myScore.update();
+        }
+      }
+      trail.push({
+        x: positionX,
+        y: positionY
+      });
+      while (trail.length > tail) {
+        trail.shift();
+      }
+
+      if (fruitPosX == positionX && fruitPosY == positionY) {
+        tail++;
+        myScore.text = "Score: " + (tail - 2) * 5;
+        myScore.update();
+        fruitPosX = Math.floor(Math.random() * tileCountX);
+        fruitPosY = Math.floor(Math.random() * tileCountY);
+        if (fruitPosY < 10) fruitPosY += 10;
+      }
+      ctx.fillStyle = "green";
+      ctx.fillRect(fruitPosX * gridSize, fruitPosY * gridSize, gridSize - 2, gridSize - 2);
+    }
+
+
+    function keyPush(evt) {
+      switch (evt.keyCode) {
+        case 37:
+          if (xVelocity != 1) {
+            xVelocity = -1;
+            yVelocity = 0;
+          }
+          break;
+        case 38:
+          if (yVelocity != 1) {
+            xVelocity = 0;
+            yVelocity = -1;
+          }
+          break;
+        case 39:
+          if (xVelocity != -1) {
+            xVelocity = 1;
+            yVelocity = 0;
+          }
+          break;
+        case 40:
+          if (yVelocity != -1) {
+            xVelocity = 0;
+            yVelocity = 1;
+          }
+          break;
+      }
+    }
+
+    function component(width, height, color, x, y, type) {
+      this.type = type;
+      this.width = width;
+      this.height = height;
+      this.x = x;
+      this.y = y;
+      this.update = function() {
+        contx = ctx;
+        if (this.type == "text") {
+          ctx.fillStyle = 'white';
+          ctx.fillRect(0, 0, canvas.width, 100);
+          ctx.fillStyle = '#033b96';
+          ctx.font = '60px sans-serif';
+          contx.fillText(this.text, this.x, this.y);
+
+
+
+        } else {
+          contx.fillStyle = color;
+          contx.fillRect(this.x, this.y, this.width, this.height);
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
